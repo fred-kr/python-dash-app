@@ -1,0 +1,78 @@
+/* custom.css */
+.full-height {
+    height: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.flex-row {
+    display: flex;
+    flex: 1;
+}
+
+.flex-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.resize-container {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    resize: both;
+}
+
+.resize-container .dcc_graph {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.resize-handle-top-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    cursor: nwse-resize;
+    z-index: 1000;
+}
+
+.resize-handle-top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    cursor: nesw-resize;
+    z-index: 1000;
+}
+
+.resize-handle-bottom-left {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    cursor: nesw-resize;
+    z-index: 1000;
+}
+
+.resize-handle-bottom-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    cursor: nwse-resize;
+    z-index: 1000;
+}
