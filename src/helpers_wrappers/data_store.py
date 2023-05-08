@@ -9,6 +9,12 @@ PLOT_TITLES: Dict[str, str] = {
     "25m50m@15s": "SEE index at 25m and 50m <br> Influence of current and wave (15s wave period)",
     "25m@10s15s": "SEE index at 25m <br> Influence of current and wave (10s and 15s wave period)",
     "50m@10s15s": "SEE index at 50m <br> Influence of current and wave (10s and 15s wave period)",
+    "25m@10s-50m@10s": "Difference between 25m and 50m at 10s wave period",
+    "25m@15s-50m@15s": "Difference between 25m and 50m at 15s wave period",
+    "25m@10s-25m@15s": "Difference between 10s and 15s at 25m",
+    "50m@10s-50m@15s": "Difference between 10s and 15s at 50m",
+    "25m@10s-50m@15s": "Difference between 25m@10s and 50m@15s",
+    "50m@10s-25m@15s": "Difference between 50m@10s and 25m@15s",
 }
 
 AXIS_TITLES = [

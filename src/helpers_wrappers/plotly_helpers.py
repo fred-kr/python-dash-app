@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 from .data_store import COLOR_SCALES
 
-
 DATA_PATH: str = "../data/SEE_index.xlsx"
+
 
 # axis = {
 #     "x": {"title": "Wave Height [m]", "range": np.linspace(0, 10, 21)},
@@ -145,7 +145,7 @@ def create_surface(
         n_colors: int,
         opacity: float = 1.0,
         show_colorbar: bool = False,
-        ambient_light: float = 0.8,
+        ambient_light: float = 0.9,
 ) -> go.Surface:
     """
     Takes return values from `get_inputs` and produces a surface that can be added to a plotly plot.
@@ -256,7 +256,8 @@ def create_layout(
             y=0.825,
             xanchor="center",
             yanchor="middle",
-            font=dict(size=30)),
+            font=dict(size=30)
+        ),
         scene=dict(
             aspectmode="manual",
             aspectratio=dict(x=x_scale, y=y_scale, z=z_scale),
@@ -264,6 +265,7 @@ def create_layout(
                 title='',
                 tickfont=dict(size=16),
                 tickangle=0,
+                tickwidth=5,
                 ticks="outside",
                 showgrid=True,
                 showbackground=True,
@@ -282,6 +284,7 @@ def create_layout(
                 title='',
                 tickfont=dict(size=16),
                 ticks="outside",
+                tickwidth=5,
                 showgrid=True,
                 showbackground=True,
                 # backgroundcolor="gray",
@@ -300,6 +303,7 @@ def create_layout(
                 tickfont=dict(size=16),
                 ticks="outside",
                 showgrid=True,
+                tickwidth=5,
                 showbackground=True,
                 # backgroundcolor="gray",
                 linecolor="black",
@@ -375,6 +379,193 @@ def create_layout(
                     ay=-20,
                     xanchor="left",
                 )
+            ],
+            camera=dict(
+                center=dict(x=0, y=0, z=0),
+                eye=dict(x=0.96, y=-1.12, z=0.26),
+            ),
+        ),
+
+    )
+
+
+def percentage_difference(base_array, compare_array):
+    # Calculate the absolute difference between the arrays
+    difference = np.abs(base_array - compare_array)
+
+    # Determine the maximum and minimum values in the base array
+    max_value = np.max(base_array)
+    min_value = np.min(base_array)
+
+    # Normalize the differences by the maximum possible difference in the base array
+    max_possible_difference = max_value - min_value
+    normalized_difference = difference / max_possible_difference
+
+    # Convert the normalized difference to percentage
+    percentage_difference = normalized_difference * 100
+
+    return percentage_difference
+
+
+
+def create_diff_layout(
+        title: str,
+        x_label: str,
+        y_label: str,
+        z_label: str,
+        surface_1_name: str,
+        surface_1: np.ndarray = None,
+        x_scale: float = 1.0,
+        y_scale: float = 0.5,
+        z_scale: float = 0.5,
+) -> go.Layout:
+    """
+    Layout settings for a plotly plot
+
+    Args:
+        title (str): Plot title
+        x_label (str): x-axis label
+        y_label (str): y-axis label
+        z_label (str): z-axis label
+        surface_1 (ndarray, optional): Surface 1. Defaults to None.
+        surface_2 (ndarray, optional): Surface 2. Defaults to None.
+        x_scale (float, optional): Set the x-axis scale. Defaults to 1.
+        y_scale (float, optional): Set the y-axis scale. Defaults to 0.5
+        z_scale (float, optional): Set the z-axis scale. Defaults to 0.5
+
+    Returns:
+        go.Layout: Layout to be added to a plotly plot
+    """
+    if surface_1 is not None:
+        surface_1_x = surface_1["x"][20]
+        surface_1_y = surface_1["y"][13]
+        surface_1_z = surface_1["z"][13][20]
+    else:
+        surface_1_x = 10
+        surface_1_y = 1.4
+        surface_1_z = 12
+
+    return go.Layout(
+        template="ggplot2",
+        autosize=False,
+        height=1000,
+        # width=1400,
+        margin=dict(r=10, b=10, l=10, t=10),
+        # paper_bgcolor="LightSteelBlue",
+        title=dict(
+            text=title,
+            x=0.5,
+            y=0.825,
+            xanchor="center",
+            yanchor="middle",
+            font=dict(size=30)
+        ),
+        scene=dict(
+            aspectmode="manual",
+            aspectratio=dict(x=x_scale, y=y_scale, z=z_scale),
+            xaxis=dict(
+                title=x_label,
+                tickfont=dict(size=16),
+                tickangle=0,
+                tickwidth=5,
+                ticks="outside",
+                showgrid=True,
+                showbackground=True,
+                # backgroundcolor="gray",
+                linecolor="black",
+                linewidth=5,
+                showline=True,
+                zeroline=False,
+                mirror=True,
+                range=[0, 10],
+                tickmode="array",
+                tickvals=[0, 2, 4, 6, 8, 10],
+                ticktext=["0", "2", "4", "6", "8", "10"],
+            ),
+            yaxis=dict(
+                title=y_label,
+                tickfont=dict(size=16),
+                ticks="outside",
+                tickwidth=5,
+                showgrid=True,
+                showbackground=True,
+                # backgroundcolor="gray",
+                linecolor="black",
+                linewidth=5,
+                showline=True,
+                zeroline=False,
+                mirror=True,
+                tickmode="array",
+                tickvals=[0, 0.5, 1.0, 1.5],
+                ticktext=["0.0", "0.5", "1.0", "1.5"],
+                range=[0.00, 1.5],
+            ),
+            zaxis=dict(
+                title=z_label,
+                tickfont=dict(size=16),
+                ticks="outside",
+                showgrid=True,
+                tickwidth=5,
+                showbackground=True,
+                # backgroundcolor="gray",
+                linecolor="black",
+                linewidth=5,
+                showline=True,
+                zeroline=False,
+                mirror=True,
+            ),
+            annotations=[  # 3d Annotations
+                # dict(
+                #     x=3,
+                #     y=0.45,
+                #     z=0,
+                #     textangle=21,
+                #     yshift=-71,
+                #     xshift=20,
+                #     text=x_label,
+                #     showarrow=False,
+                #     font=dict(size=25),
+                #     xanchor="center",
+                #     yanchor="top",
+                #     # captureevents=True,
+                # ),
+                # dict(
+                #     x=9.8,
+                #     y=0.25,
+                #     z=0,
+                #     textangle=-43,
+                #     text=y_label,
+                #     showarrow=False,
+                #     font=dict(size=25),
+                #     xanchor="left",
+                #     xshift=78,
+                #     yanchor="middle",
+                #     # captureevents=True,
+                # ),
+                # dict(
+                #     x=0.05,
+                #     y=0.02,
+                #     z=7,
+                #     textangle=-94,
+                #     text=z_label,
+                #     showarrow=False,
+                #     font=dict(size=25),
+                #     xanchor="right",
+                #     xshift=-60,
+                #     yanchor="middle",
+                #     # captureevents=True,
+                # ),
+                dict(
+                    x=surface_1_x,
+                    y=surface_1_y,
+                    z=surface_1_z,
+                    text=surface_1_name,
+                    font=dict(size=20),
+                    arrowhead=6,
+                    ax=70,
+                    ay=-20,
+                    xanchor="left",
+                ),
             ],
             camera=dict(
                 center=dict(x=0, y=0, z=0),

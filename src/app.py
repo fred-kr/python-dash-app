@@ -1,8 +1,7 @@
 from dash import dash, dcc, html, Output, Input, State, callback_context
 import dash_bootstrap_components as dbc
-from dash.exceptions import PreventUpdate
 
-from helpers_wrappers.surface_plot_creation import Plot, get_cam_data
+from helpers_wrappers.surface_plot_creation import Plot, get_cam_data, DiffPlot
 from helpers_wrappers.data_store import PLOT_TITLES
 from helpers_wrappers.dash_helpers import create_tab_content
 
@@ -19,11 +18,25 @@ fig_1 = Plot("25m@10s", "50m@10s", PLOT_TITLES["25m50m@10s"])
 fig_2 = Plot("50m@15s", "25m@15s", PLOT_TITLES["25m50m@15s"])
 fig_3 = Plot("25m@10s", "25m@15s", PLOT_TITLES["25m@10s15s"])
 fig_4 = Plot("50m@10s", "50m@15s", PLOT_TITLES["50m@10s15s"])
+diff_1 = DiffPlot("25m@10s-50m@10s")
+diff_2 = DiffPlot("25m@15s-50m@15s")
+diff_3 = DiffPlot("25m@10s-25m@15s")
+diff_4 = DiffPlot("50m@10s-50m@15s")
+diff_5 = DiffPlot("25m@10s-50m@15s")
+diff_6 = DiffPlot("25m@15s-50m@10s")
 figs = {
     "graph-1": fig_1.get_figure(),
     "graph-2": fig_2.get_figure(),
     "graph-3": fig_3.get_figure(),
     "graph-4": fig_4.get_figure(),
+}
+diffs = {
+    "diff-1": diff_1.get_figure(),
+    "diff-2": diff_2.get_figure(),
+    "diff-3": diff_3.get_figure(),
+    "diff-4": diff_4.get_figure(),
+    "diff-5": diff_5.get_figure(),
+    "diff-6": diff_6.get_figure(),
 }
 
 app.layout = dbc.Container(
@@ -90,22 +103,28 @@ app.layout = dbc.Container(
                         html.Div(
                             [
                                 html.Label("Annotation x:"),
-                                dcc.Input(id="annotation-x-x", type="number", value=3,
-                                    step=0.01, min=0, max=10),
+                                dcc.Input(
+                                    id="annotation-x-x", type="number", value=3,
+                                    step=0.01, min=0, max=10
+                                ),
                             ]
                         ),
                         html.Div(
                             [
                                 html.Label("Annotation y:"),
-                                dcc.Input(id="annotation-x-y", type="number", value=0.45,
-                                    step=0.01, min=0, max=1.5),
+                                dcc.Input(
+                                    id="annotation-x-y", type="number", value=0.45,
+                                    step=0.01, min=0, max=1.5
+                                ),
                             ]
                         ),
                         html.Div(
                             [
                                 html.Label("Annotation z:"),
-                                dcc.Input(id="annotation-x-z", type="number", value=0, step=0.1,
-                                    max=14),
+                                dcc.Input(
+                                    id="annotation-x-z", type="number", value=0, step=0.1,
+                                    max=14
+                                ),
                             ]
                         ),
 
@@ -145,16 +164,20 @@ app.layout = dbc.Container(
                         html.Div(
                             [
                                 html.Label("X Shift: "),
-                                dcc.Input(id="annotation-x-xshift", type="number", value=20,
-                                    step=1),
+                                dcc.Input(
+                                    id="annotation-x-xshift", type="number", value=20,
+                                    step=1
+                                ),
 
                             ]
                         ),
                         html.Div(
                             [
                                 html.Label("Y Shift: "),
-                                dcc.Input(id="annotation-x-yshift", type="number", value=-85,
-                                    step=1),
+                                dcc.Input(
+                                    id="annotation-x-yshift", type="number", value=-85,
+                                    step=1
+                                ),
                             ]
                         ),
                         html.Hr(),
@@ -170,22 +193,28 @@ app.layout = dbc.Container(
                         html.Div(
                             [
                                 html.Label("Annotation x:"),
-                                dcc.Input(id="annotation-y-x", type="number", value=9.8,
-                                    step=0.01, min=0, max=10),
+                                dcc.Input(
+                                    id="annotation-y-x", type="number", value=9.8,
+                                    step=0.01, min=0, max=10
+                                ),
                             ]
                         ),
                         html.Div(
                             [
                                 html.Label("Annotation y:"),
-                                dcc.Input(id="annotation-y-y", type="number", value=0.25,
-                                    step=0.01, min=0, max=1.5),
+                                dcc.Input(
+                                    id="annotation-y-y", type="number", value=0.25,
+                                    step=0.01, min=0, max=1.5
+                                ),
                             ]
                         ),
                         html.Div(
                             [
                                 html.Label("Annotation z:"),
-                                dcc.Input(id="annotation-y-z", type="number", value=0,
-                                    step=0.01, min=0, max=14),
+                                dcc.Input(
+                                    id="annotation-y-z", type="number", value=0,
+                                    step=0.01, min=0, max=14
+                                ),
                             ]
                         ),
 
@@ -225,8 +254,10 @@ app.layout = dbc.Container(
                         html.Div(
                             [
                                 html.Label("X Shift: "),
-                                dcc.Input(id="annotation-y-xshift", type="number", value=78,
-                                    step=1),
+                                dcc.Input(
+                                    id="annotation-y-xshift", type="number", value=78,
+                                    step=1
+                                ),
 
                             ]
                         ),
@@ -249,22 +280,28 @@ app.layout = dbc.Container(
                         html.Div(
                             [
                                 html.Label("Annotation x:"),
-                                dcc.Input(id="annotation-z-x", type="number", value=0.05,
-                                    step=0.01, min=0, max=10),
+                                dcc.Input(
+                                    id="annotation-z-x", type="number", value=0.05,
+                                    step=0.01, min=0, max=10
+                                ),
                             ]
                         ),
                         html.Div(
                             [
                                 html.Label("Annotation y:"),
-                                dcc.Input(id="annotation-z-y", type="number", value=0.02,
-                                    step=0.01, min=0, max=1.5),
+                                dcc.Input(
+                                    id="annotation-z-y", type="number", value=0.02,
+                                    step=0.01, min=0, max=1.5
+                                ),
                             ]
                         ),
                         html.Div(
                             [
                                 html.Label("Annotation z:"),
-                                dcc.Input(id="annotation-z-z", type="number", value=7,
-                                    step=0.01, min=0, max=14),
+                                dcc.Input(
+                                    id="annotation-z-z", type="number", value=7,
+                                    step=0.01, min=0, max=14
+                                ),
                             ]
                         ),
 
@@ -304,8 +341,10 @@ app.layout = dbc.Container(
                         html.Div(
                             [
                                 html.Label("X Shift: "),
-                                dcc.Input(id="annotation-z-xshift", type="number", value=-60,
-                                    step=1),
+                                dcc.Input(
+                                    id="annotation-z-xshift", type="number", value=-60,
+                                    step=1
+                                ),
 
                             ]
                         ),
@@ -324,6 +363,64 @@ app.layout = dbc.Container(
                 )
             ],
         ),
+        html.Hr(),
+        dbc.Row(
+            [
+                dbc.Col(
+                    [
+                        dcc.Graph(
+                            id="diff-window",
+                            config={
+                                "editable": True,
+                                "edits": {
+                                    "colorbarTitleText": False,
+                                    "annotationText": False,
+                                    "annotationPosition": True,
+                                    "annotationTail": True,
+                                    "titleText": True,
+                                },
+                                "showEditInChartStudio": True,
+                                "plotlyServerURL": "https://chart-studio.plotly.com",
+                                "toImageButtonOptions": {
+                                    "format": "svg",  # one of png, svg, jpeg, webp
+                                }
+                            },
+                        ),
+                        html.Div(
+                            [
+                                html.Label("Select a diff plot to view:"),
+                                dcc.Dropdown(
+                                    id="diff-selector",
+                                    options=[
+                                        {
+                                            "label": "Difference: 25m@10s-50m@10s",
+                                            "value": "diff-1"},
+                                        {
+                                            "label": "Difference: 25m@15s-50m@15s",
+                                            "value": "diff-2"},
+                                        {
+                                            "label": "Difference: 25m@10s-25m@15s",
+                                            "value": "diff-3"},
+                                        {
+                                            "label": "Difference: 50m@10s-50m@15s",
+                                            "value": "diff-4"},
+                                        {
+                                            "label": "Difference: 25m@10s-50m@15s",
+                                            "value": "diff-5"},
+                                        {
+                                            "label": "Difference: 25m@15s-50m@10s",
+                                            "value": "diff-6"},
+                                    ],
+                                    value="diff-1",
+                                    clearable=False,
+                                    style={"width": "50%"}
+                                ),
+                            ]
+                        ),
+                    ], width=12
+                )
+            ]
+        )
     ], fluid=True
 )
 
@@ -458,6 +555,14 @@ def select_graph(graph):
         uirevision=graph,
     )
     return fig
+
+
+@app.callback(
+    Output("diff-window", "figure"),
+    Input("diff-selector", "value"),
+)
+def select_diff(diff):
+    return diffs[diff]
 
 
 if __name__ == '__main__':

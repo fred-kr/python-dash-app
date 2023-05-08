@@ -1,6 +1,6 @@
 from dash import dash_table, html
-from .plotly_helpers import create_surface, create_layout
-from .surface import SURFACE_PROPERTIES
+from .plotly_helpers import create_surface, create_layout, create_diff_layout
+from .surface import SURFACE_PROPERTIES, DIFF_SURFACES
 from .data_store import AXIS_TITLES
 import plotly.graph_objects as go
 
@@ -39,23 +39,25 @@ def get_cam_data(cam_data: dict, input_graph: str):
     # Convert data dict to list of dicts
     data = [dict(zip(data_dict.keys(), values)) for values in zip(*data_dict.values())]
 
-    return html.Div([
-        dash_table.DataTable(
-            id=f"{input_graph}-cam-properties",
-            columns=[
-                {"name": "Axis", "id": "Axis"},
-                {"name": "Eye (Viewing Angle)", "id": "Eye"},
-                {"name": "Center", "id": "Center"},
-            ],
-            data=data,
-            style_cell={"textAlign": "left"},
-            style_header={
-                "backgroundColor": "rgb(230, 230, 230)",
-                "fontWeight": "bold"
-            },
-            style_table={"width": "25%"},
-        )
-    ])
+    return html.Div(
+        [
+            dash_table.DataTable(
+                id=f"{input_graph}-cam-properties",
+                columns=[
+                    {"name": "Axis", "id": "Axis"},
+                    {"name": "Eye (Viewing Angle)", "id": "Eye"},
+                    {"name": "Center", "id": "Center"},
+                ],
+                data=data,
+                style_cell={"textAlign": "left"},
+                style_header={
+                    "backgroundColor": "rgb(230, 230, 230)",
+                    "fontWeight": "bold"
+                },
+                style_table={"width": "25%"},
+            )
+        ]
+    )
 
 
 class Plot:
@@ -74,26 +76,56 @@ class Plot:
         max_z_1 = SURFACE_PROPERTIES[surface_1_key]["surface"]["z"].max()
         max_z_2 = SURFACE_PROPERTIES[surface_2_key]["surface"]["z"].max()
 
-        def create_surface_with_properties(surface_key, opacity=None, show_colorbar=False,
-                ambient_light=0.8):
+        def create_surface_with_properties(
+                surface_key, opacity=None, show_colorbar=False,
+                ambient_light=0.8
+        ):
             surface_properties = SURFACE_PROPERTIES[surface_key]
             surface = surface_properties["surface"]
             x, y, z = surface["x"], surface["y"], surface["z"]
             colorscale = surface_properties["colorscale"]
             n_colors = surface_properties["n_colors"]
 
-            return create_surface(x, y, z, colorscale, n_colors, opacity=opacity, show_colorbar=show_colorbar)
+            return create_surface(
+                x, y, z, colorscale, n_colors, opacity=opacity,
+                show_colorbar=show_colorbar, ambient_light=ambient_light
+            )
 
         if max_z_1 > max_z_2:
-            self.surface_1 = create_surface_with_properties(surface_1_key, opacity=0.8,
-                show_colorbar=True, ambient_light=0.2)
+            self.surface_1 = create_surface_with_properties(
+                surface_1_key, opacity=0.8,
+                show_colorbar=True, ambient_light=0.5
+            )
             self.surface_2 = create_surface_with_properties(surface_2_key)
         else:
             self.surface_1 = create_surface_with_properties(surface_1_key)
-            self.surface_2 = create_surface_with_properties(surface_2_key, opacity=0.8,
-                show_colorbar=True, ambient_light=0.2)
+            self.surface_2 = create_surface_with_properties(
+                surface_2_key, opacity=0.8,
+                show_colorbar=True, ambient_light=0.5
+            )
 
         # TODO: add parameters for annotation position for interactive positioning
 
     def get_figure(self) -> go.Figure:
         return go.Figure(data=[self.surface_1, self.surface_2], layout=self.layout)
+
+
+class DiffPlot:
+    def __init__(self, diff_name: str) -> None:
+        self.layout = create_diff_layout(
+            title=diff_name,
+            x_label=AXIS_TITLES[0],
+            y_label=AXIS_TITLES[1],
+            z_label="Percent Difference",
+            surface_1_name=diff_name,
+            surface_1=DIFF_SURFACES[diff_name],
+        )
+        self.surface = go.Surface(
+            x=DIFF_SURFACES[diff_name]["x"],
+            y=DIFF_SURFACES[diff_name]["y"],
+            z=DIFF_SURFACES[diff_name]["z"],
+            colorscale="spectral_r",
+        )
+
+    def get_figure(self) -> go.Figure:
+        return go.Figure(data=[self.surface], layout=self.layout)
