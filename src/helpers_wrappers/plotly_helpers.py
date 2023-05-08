@@ -74,7 +74,7 @@ def make_colorscale_cont(n_colors: int, pal: str = "RCB_Set3_12") -> List[Tuple[
     return colorscale
 
 
-def make_colorscale_distinct(n_colors: int, pal: str = "RCB_Set3_12") -> List[Tuple[float, str]]:
+def make_colorscale_distinct(n_colors: int, pal: str = "Plotly") -> List[Tuple[float, str]]:
     """
     Generate a distinct colorscale for a given number of groups.
 
@@ -144,7 +144,8 @@ def create_surface(
         colors_scaled: List[Tuple[float, str]],
         n_colors: int,
         opacity: float = 1.0,
-        show_colorbar: bool = False
+        show_colorbar: bool = False,
+        ambient_light: float = 0.8,
 ) -> go.Surface:
     """
     Takes return values from `get_inputs` and produces a surface that can be added to a plotly plot.
@@ -177,15 +178,20 @@ def create_surface(
             ticktext=np.arange(0, (n_colors * 2) + 1, 2),
             orientation="v",
             y=0.5,
+            x=0.95,
             len=0.5,
             tickfont=dict(size=20),
         ),
         contours=dict(
-            x=dict(show=True, start=0, end=10, size=2, color="gray", width=5),
-            y=dict(show=True, start=0, end=1.5, size=0.5, color="gray", width=5),
-            z=dict(show=True, start=0, end=(n_colors * 2), size=2),
+            x=dict(show=True, start=0, end=10, size=2, color="black", width=5),
+            y=dict(show=True, start=0, end=1.5, size=0.5, color="black", width=5),
+            # z=dict(show=True, start=0, end=(n_colors * 2), size=2),
         ),
-        hoverinfo="skip"
+        hoverinfo="skip",
+        lighting=dict(
+            ambient=ambient_light,
+            diffuse=0.5,
+        ),
     )
 
 
@@ -194,9 +200,13 @@ def create_layout(
         x_label: str,
         y_label: str,
         z_label: str,
+        surface_1_name: str,
+        surface_2_name: str,
+        surface_1: np.ndarray = None,
+        surface_2: np.ndarray = None,
         x_scale: float = 1.0,
         y_scale: float = 0.5,
-        z_scale: float = 0.5
+        z_scale: float = 0.5,
 ) -> go.Layout:
     """
     Layout settings for a plotly plot
@@ -206,6 +216,8 @@ def create_layout(
         x_label (str): x-axis label
         y_label (str): y-axis label
         z_label (str): z-axis label
+        surface_1 (ndarray, optional): Surface 1. Defaults to None.
+        surface_2 (ndarray, optional): Surface 2. Defaults to None.
         x_scale (float, optional): Set the x-axis scale. Defaults to 1.
         y_scale (float, optional): Set the y-axis scale. Defaults to 0.5
         z_scale (float, optional): Set the z-axis scale. Defaults to 0.5
@@ -213,16 +225,35 @@ def create_layout(
     Returns:
         go.Layout: Layout to be added to a plotly plot
     """
+    if surface_1 is not None:
+        surface_1_x = surface_1["x"][20]
+        surface_1_y = surface_1["y"][13]
+        surface_1_z = surface_1["z"][13][20]
+    else:
+        surface_1_x = 10
+        surface_1_y = 1.4
+        surface_1_z = 12
+
+    if surface_2 is not None:
+        surface_2_x = surface_2["x"][20]
+        surface_2_y = surface_2["y"][13]
+        surface_2_z = surface_2["z"][13][20]
+    else:
+        surface_2_x = 10
+        surface_2_y = 1.4
+        surface_2_z = 10
+
     return go.Layout(
+        template="ggplot2",
         autosize=False,
-        # height=1000,
+        height=1000,
         # width=1400,
         margin=dict(r=10, b=10, l=10, t=10),
-        paper_bgcolor="LightSteelBlue",
+        # paper_bgcolor="LightSteelBlue",
         title=dict(
             text=title,
             x=0.5,
-            y=0.9,
+            y=0.825,
             xanchor="center",
             yanchor="middle",
             font=dict(size=30)),
@@ -236,7 +267,7 @@ def create_layout(
                 ticks="outside",
                 showgrid=True,
                 showbackground=True,
-                backgroundcolor="gray",
+                # backgroundcolor="gray",
                 linecolor="black",
                 linewidth=5,
                 showline=True,
@@ -253,7 +284,7 @@ def create_layout(
                 ticks="outside",
                 showgrid=True,
                 showbackground=True,
-                backgroundcolor="gray",
+                # backgroundcolor="gray",
                 linecolor="black",
                 linewidth=5,
                 showline=True,
@@ -270,7 +301,7 @@ def create_layout(
                 ticks="outside",
                 showgrid=True,
                 showbackground=True,
-                backgroundcolor="gray",
+                # backgroundcolor="gray",
                 linecolor="black",
                 linewidth=5,
                 showline=True,
@@ -281,64 +312,74 @@ def create_layout(
                 ticktext=["", "2", "4", "6", "8", "10", "12", "14"],
                 range=[0, 14],
             ),
-            annotations=[
+            annotations=[  # 3d Annotations
                 dict(
-
+                    x=3,
+                    y=0.45,
+                    z=0,
+                    textangle=21,
+                    yshift=-71,
+                    xshift=20,
+                    text=x_label,
+                    showarrow=False,
+                    font=dict(size=25),
+                    xanchor="center",
+                    yanchor="top",
+                    # captureevents=True,
                 ),
-                dict()
+                dict(
+                    x=9.8,
+                    y=0.25,
+                    z=0,
+                    textangle=-43,
+                    text=y_label,
+                    showarrow=False,
+                    font=dict(size=25),
+                    xanchor="left",
+                    xshift=78,
+                    yanchor="middle",
+                    # captureevents=True,
+                ),
+                dict(
+                    x=0.05,
+                    y=0.02,
+                    z=7,
+                    textangle=-94,
+                    text=z_label,
+                    showarrow=False,
+                    font=dict(size=25),
+                    xanchor="right",
+                    xshift=-60,
+                    yanchor="middle",
+                    # captureevents=True,
+                ),
+                dict(
+                    x=surface_1_x,
+                    y=surface_1_y,
+                    z=surface_1_z,
+                    text=surface_1_name,
+                    font=dict(size=20),
+                    arrowhead=6,
+                    ax=70,
+                    ay=-20,
+                    xanchor="left",
+                ),
+                dict(
+                    x=surface_2_x,
+                    y=surface_2_y,
+                    z=surface_2_z,
+                    text=surface_2_name,
+                    font=dict(size=20),
+                    arrowhead=6,
+                    ax=70,
+                    ay=-20,
+                    xanchor="left",
+                )
             ],
             camera=dict(
                 center=dict(x=0, y=0, z=0),
-                eye=dict(x=0.8, y=-1.25, z=0.2),
+                eye=dict(x=0.96, y=-1.12, z=0.26),
             ),
-
         ),
-        annotations=[
-            dict(
-                x=5,
-                y=0,
-                # z=0,
-                textangle=14,
-                xref="paper",
-                yref="paper",
-                yshift=-50,
-                xshift=20,
-                text=x_label,
-                showarrow=False,
-                font=dict(size=25),
-                xanchor="center",
-                yanchor="middle",
-                captureevents=True,
-            ),
-            dict(
-                x=10,
-                y=0.75,
-                # z=0,
-                xref="paper",
-                yref="paper",
-                textangle=-60,
-                text=y_label,
-                showarrow=False,
-                font=dict(size=25),
-                xanchor="center",
-                xshift=75,
-                yanchor="middle",
-                captureevents=True,
-            ),
-            dict(
-                x=0,
-                y=0,
-                # z=7,
-                xref="paper",
-                yref="paper",
-                textangle=-90,
-                text=z_label,
-                showarrow=False,
-                font=dict(size=25),
-                xanchor="center",
-                xshift=-50,
-                yanchor="middle",
-                captureevents=True,
-            ),
-        ],
+
     )

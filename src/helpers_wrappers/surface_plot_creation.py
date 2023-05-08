@@ -64,13 +64,18 @@ class Plot:
             title=plot_title,
             x_label=AXIS_TITLES[0],
             y_label=AXIS_TITLES[1],
-            z_label=AXIS_TITLES[2]
+            z_label=AXIS_TITLES[2],
+            surface_1_name=surface_1_key,
+            surface_2_name=surface_2_key,
+            surface_1=SURFACE_PROPERTIES[surface_1_key]["surface"],
+            surface_2=SURFACE_PROPERTIES[surface_2_key]["surface"],
         )
         # Given surface with the higher max z value will get opacity set to 0.75 and show_colorbar set to True
         max_z_1 = SURFACE_PROPERTIES[surface_1_key]["surface"]["z"].max()
         max_z_2 = SURFACE_PROPERTIES[surface_2_key]["surface"]["z"].max()
 
-        def create_surface_with_properties(surface_key, opacity=None, show_colorbar=False):
+        def create_surface_with_properties(surface_key, opacity=None, show_colorbar=False,
+                ambient_light=0.8):
             surface_properties = SURFACE_PROPERTIES[surface_key]
             surface = surface_properties["surface"]
             x, y, z = surface["x"], surface["y"], surface["z"]
@@ -80,11 +85,13 @@ class Plot:
             return create_surface(x, y, z, colorscale, n_colors, opacity=opacity, show_colorbar=show_colorbar)
 
         if max_z_1 > max_z_2:
-            self.surface_1 = create_surface_with_properties(surface_1_key, opacity=0.75, show_colorbar=True)
+            self.surface_1 = create_surface_with_properties(surface_1_key, opacity=0.8,
+                show_colorbar=True, ambient_light=0.2)
             self.surface_2 = create_surface_with_properties(surface_2_key)
         else:
             self.surface_1 = create_surface_with_properties(surface_1_key)
-            self.surface_2 = create_surface_with_properties(surface_2_key, opacity=0.75, show_colorbar=True)
+            self.surface_2 = create_surface_with_properties(surface_2_key, opacity=0.8,
+                show_colorbar=True, ambient_light=0.2)
 
         # TODO: add parameters for annotation position for interactive positioning
 

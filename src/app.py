@@ -32,201 +32,7 @@ app.layout = dbc.Container(
             [
                 dbc.Col(
                     [
-                        html.Div(
-                            [
-                                html.Div(
-                                    [
-                                        html.Label('Eye Coordinates:'),
-                                        html.Div(
-                                            [
-                                                html.Label('x:'),
-                                                dcc.Slider(
-                                                    id='eye-x-slider',
-                                                    min=-3,
-                                                    max=3,
-                                                    value=0.8,
-                                                    step=0.01,
-                                                    updatemode='drag',
-                                                    marks={
-                                                        "-3": "-3",
-                                                        "-2": "-2",
-                                                        "-1": "-1",
-                                                        "0": "0",
-                                                        "1": "1",
-                                                        "2": "2",
-                                                        "3": "3"
-                                                    }
-                                                ),
-                                                dcc.Input(
-                                                    id='eye-x-input',
-                                                    type='number',
-                                                    min=-3,
-                                                    max=3,
-                                                    value=0.8,
-                                                    step=0.01
-                                                ),
-                                            ]
-                                        ),
-                                        html.Div(
-                                            [
-                                                html.Label('y:'),
-                                                dcc.Slider(
-                                                    id='eye-y-slider',
-                                                    min=-3,
-                                                    max=3,
-                                                    value=-1.25,
-                                                    step=0.01,
-                                                    updatemode='drag',
-                                                    marks={
-                                                        "-3": "-3",
-                                                        "-2": "-2",
-                                                        "-1": "-1",
-                                                        "0": "0",
-                                                        "1": "1",
-                                                        "2": "2",
-                                                        "3": "3"
-                                                    }
-                                                ),
-                                                dcc.Input(
-                                                    id='eye-y-input',
-                                                    type='number',
-                                                    min=-3,
-                                                    max=3,
-                                                    value=-1.25,
-                                                    step=0.01
-                                                ),
-                                            ]
-                                        ),
-                                        html.Div(
-                                            [
-                                                html.Label('z:'),
-                                                dcc.Slider(
-                                                    id='eye-z-slider',
-                                                    min=-3,
-                                                    max=3,
-                                                    value=0.2,
-                                                    step=0.01,
-                                                    updatemode='drag',
-                                                    marks={
-                                                        "-3": "-3",
-                                                        "-2": "-2",
-                                                        "-1": "-1",
-                                                        "0": "0",
-                                                        "1": "1",
-                                                        "2": "2",
-                                                        "3": "3"
-                                                    }
-                                                ),
-                                                dcc.Input(
-                                                    id='eye-z-input',
-                                                    type='number',
-                                                    min=-3,
-                                                    max=3,
-                                                    value=0.2,
-                                                    step=0.01
-                                                ),
-                                            ]
-                                        ),
-                                    ]
-                                ),
-                                html.Hr(),
-                                html.Div(
-                                    [
-                                        html.Label('Center Coordinates:'),
-                                        html.Div(
-                                            [
-                                                html.Label('x:'),
-                                                dcc.Slider(
-                                                    id='center-x-slider',
-                                                    min=-3,
-                                                    max=3,
-                                                    value=0,
-                                                    step=0.01,
-                                                    updatemode='drag',
-                                                    marks={
-                                                        "-3": "-3",
-                                                        "-2": "-2",
-                                                        "-1": "-1",
-                                                        "0": "0",
-                                                        "1": "1",
-                                                        "2": "2",
-                                                        "3": "3"
-                                                    },
-                                                ),
-                                                dcc.Input(
-                                                    id='center-x-input',
-                                                    type='number',
-                                                    min=-3,
-                                                    max=3,
-                                                    value=0,
-                                                    step=0.01
-                                                ),
-                                            ]
-                                        ),
-                                        html.Div(
-                                            [
-                                                html.Label('y:'),
-                                                dcc.Slider(
-                                                    id='center-y-slider',
-                                                    min=-3,
-                                                    max=3,
-                                                    value=0,
-                                                    step=0.01,
-                                                    updatemode='drag',
-                                                    marks={
-                                                        "-3": "-3",
-                                                        "-2": "-2",
-                                                        "-1": "-1",
-                                                        "0": "0",
-                                                        "1": "1",
-                                                        "2": "2",
-                                                        "3": "3"
-                                                    },
-                                                ),
-                                                dcc.Input(
-                                                    id='center-y-input',
-                                                    type='number',
-                                                    min=-3,
-                                                    max=3,
-                                                    value=0,
-                                                    step=0.01
-                                                ),
-                                            ]
-                                        ),
-                                        html.Div(
-                                            [
-                                                html.Label('z:'),
-                                                dcc.Slider(
-                                                    id='center-z-slider',
-                                                    min=-3,
-                                                    max=3,
-                                                    value=0,
-                                                    step=0.01,
-                                                    updatemode='drag',
-                                                    marks={
-                                                        "-3": "-3",
-                                                        "-2": "-2",
-                                                        "-1": "-1",
-                                                        "0": "0",
-                                                        "1": "1",
-                                                        "2": "2",
-                                                        "3": "3"
-                                                    },
-                                                ),
-                                                dcc.Input(
-                                                    id='center-z-input',
-                                                    type='number',
-                                                    min=-3,
-                                                    max=3,
-                                                    value=0,
-                                                    step=0.01
-                                                ),
-                                            ]
-                                        ),
-                                    ]
-                                )
-                            ],
-                        ),
+                        html.Div(id="cam-output"),
                     ], width=2
                 ),
 
@@ -245,10 +51,8 @@ app.layout = dbc.Container(
                                 },
                                 "showEditInChartStudio": True,
                                 "plotlyServerURL": "https://chart-studio.plotly.com",
-                                "responsive": True,
                                 "toImageButtonOptions": {
                                     "format": "svg",  # one of png, svg, jpeg, webp
-
                                 }
                             },
                         ),
@@ -277,7 +81,7 @@ app.layout = dbc.Container(
                                 ),
                             ]
                         ),
-                    ], width=7
+                    ], width=6
                 ),
                 dbc.Col(
                     [
@@ -285,23 +89,24 @@ app.layout = dbc.Container(
                         html.Div(
                             [
                                 html.Label("Annotation x:"),
-                                dcc.Input(id="annotation-x-x", type="number", value=0.5,
-                                    step=0.01, min=0, max=1),
+                                dcc.Input(id="annotation-x-x", type="number", value=3,
+                                    step=0.01, min=0, max=10),
                             ]
                         ),
                         html.Div(
                             [
                                 html.Label("Annotation y:"),
-                                dcc.Input(id="annotation-x-y", type="number", value=0.5,
-                                    step=0.01, min=0, max=1),
+                                dcc.Input(id="annotation-x-y", type="number", value=0.45,
+                                    step=0.01, min=0, max=1.5),
                             ]
                         ),
-                        # html.Div(
-                        #     [
-                        #         html.Label("Annotation z:"),
-                        #         dcc.Input(id="annotation-x-z", type="number", value=0, step=0.1, ),
-                        #     ]
-                        # ),
+                        html.Div(
+                            [
+                                html.Label("Annotation z:"),
+                                dcc.Input(id="annotation-x-z", type="number", value=0, step=0.1,
+                                    max=14),
+                            ]
+                        ),
 
                         html.Hr(),
                         html.Label("Font Size:"),
@@ -329,7 +134,7 @@ app.layout = dbc.Container(
                                                 {"label": "Top", "value": "top"},
                                                 {"label": "Middle", "value": "middle"},
                                                 {"label": "Bottom", "value": "bottom"},
-                                            ], value="middle"
+                                            ], value="top"
                                         ),
                                     ]
                                 ),
@@ -347,13 +152,13 @@ app.layout = dbc.Container(
                         html.Div(
                             [
                                 html.Label("Y Shift: "),
-                                dcc.Input(id="annotation-x-yshift", type="number", value=-50,
+                                dcc.Input(id="annotation-x-yshift", type="number", value=-85,
                                     step=1),
                             ]
                         ),
                         html.Hr(),
                         html.Label("Text Angle:"),
-                        dcc.Input(id="annotation-x-textangle", type="number", value=14, step=1),
+                        dcc.Input(id="annotation-x-textangle", type="number", value=22, step=1),
                         html.Hr(),
 
                     ], width=1
@@ -364,22 +169,22 @@ app.layout = dbc.Container(
                         html.Div(
                             [
                                 html.Label("Annotation x:"),
-                                dcc.Input(id="annotation-y-x", type="number", value=0.5,
-                                    step=0.01, min=0, max=1),
+                                dcc.Input(id="annotation-y-x", type="number", value=9.8,
+                                    step=0.01, min=0, max=10),
                             ]
                         ),
                         html.Div(
                             [
                                 html.Label("Annotation y:"),
-                                dcc.Input(id="annotation-y-y", type="number", value=0.5,
-                                    step=0.01, min=0, max=1),
+                                dcc.Input(id="annotation-y-y", type="number", value=0.25,
+                                    step=0.01, min=0, max=1.5),
                             ]
                         ),
                         html.Div(
                             [
                                 html.Label("Annotation z:"),
-                                dcc.Input(id="annotation-y-z", type="number", value=0.5,
-                                    step=0.01, min=0, max=1),
+                                dcc.Input(id="annotation-y-z", type="number", value=0,
+                                    step=0.01, min=0, max=14),
                             ]
                         ),
 
@@ -397,7 +202,7 @@ app.layout = dbc.Container(
                                                 {"label": "Left", "value": "left"},
                                                 {"label": "Center", "value": "center"},
                                                 {"label": "Right", "value": "right"},
-                                            ], value="center"
+                                            ], value="left"
                                         ),
                                     ]
                                 ),
@@ -419,7 +224,7 @@ app.layout = dbc.Container(
                         html.Div(
                             [
                                 html.Label("X Shift: "),
-                                dcc.Input(id="annotation-y-xshift", type="number", value=75,
+                                dcc.Input(id="annotation-y-xshift", type="number", value=78,
                                     step=1),
 
                             ]
@@ -432,7 +237,7 @@ app.layout = dbc.Container(
                         ),
                         html.Hr(),
                         html.Label("Text Angle:"),
-                        dcc.Input(id="annotation-y-textangle", type="number", value=-60, step=1),
+                        dcc.Input(id="annotation-y-textangle", type="number", value=-43, step=1),
                         html.Hr(),
 
                     ], width=1
@@ -443,22 +248,22 @@ app.layout = dbc.Container(
                         html.Div(
                             [
                                 html.Label("Annotation x:"),
-                                dcc.Input(id="annotation-z-x", type="number", value=0.5,
-                                    step=0.01, min=0, max=1),
+                                dcc.Input(id="annotation-z-x", type="number", value=0.05,
+                                    step=0.01, min=0, max=10),
                             ]
                         ),
                         html.Div(
                             [
                                 html.Label("Annotation y:"),
-                                dcc.Input(id="annotation-z-y", type="number", value=0.5,
-                                    step=0.01, min=0, max=1),
+                                dcc.Input(id="annotation-z-y", type="number", value=0.02,
+                                    step=0.01, min=0, max=1.5),
                             ]
                         ),
                         html.Div(
                             [
                                 html.Label("Annotation z:"),
-                                dcc.Input(id="annotation-z-z", type="number", value=0.5,
-                                    step=0.01, min=0, max=1),
+                                dcc.Input(id="annotation-z-z", type="number", value=7,
+                                    step=0.01, min=0, max=14),
                             ]
                         ),
 
@@ -476,7 +281,7 @@ app.layout = dbc.Container(
                                                 {"label": "Left", "value": "left"},
                                                 {"label": "Center", "value": "center"},
                                                 {"label": "Right", "value": "right"},
-                                            ], value="center"
+                                            ], value="right"
                                         ),
                                     ]
                                 ),
@@ -498,7 +303,7 @@ app.layout = dbc.Container(
                         html.Div(
                             [
                                 html.Label("X Shift: "),
-                                dcc.Input(id="annotation-z-xshift", type="number", value=-50,
+                                dcc.Input(id="annotation-z-xshift", type="number", value=-60,
                                     step=1),
 
                             ]
@@ -511,7 +316,7 @@ app.layout = dbc.Container(
                         ),
                         html.Hr(),
                         html.Label("Text Angle:"),
-                        dcc.Input(id="annotation-z-textangle", type="number", value=-90, step=1),
+                        dcc.Input(id="annotation-z-textangle", type="number", value=-94, step=1),
                         html.Hr(),
 
                     ], width=1
@@ -522,152 +327,12 @@ app.layout = dbc.Container(
 )
 
 
-# Sync the eye x input and slider
 @app.callback(
-    Output("eye-x-input", "value", allow_duplicate=True),
-    Output("eye-x-slider", "value", allow_duplicate=True),
-    Input("eye-x-input", "value"),
-    Input("eye-x-slider", "value"),
-)
-def sync_eye_x(input_value, slider_value):
-    ctx = callback_context
-    if ctx.triggered:
-        input_id = ctx.triggered[0]["prop_id"].split(".")[0]
-        if input_id == "eye-x-input":
-            return input_value, input_value
-        elif input_id == "eye-x-slider":
-            return slider_value, slider_value
-    return input_value, slider_value
-
-
-# Sync the eye y input and slider
-@app.callback(
-    Output("eye-y-input", "value", allow_duplicate=True),
-    Output("eye-y-slider", "value", allow_duplicate=True),
-    Input("eye-y-input", "value"),
-    Input("eye-y-slider", "value"),
-)
-def sync_eye_y(input_value, slider_value):
-    ctx = callback_context
-    if ctx.triggered:
-        input_id = ctx.triggered[0]["prop_id"].split(".")[0]
-        if input_id == "eye-y-input":
-            return input_value, input_value
-        elif input_id == "eye-y-slider":
-            return slider_value, slider_value
-    return input_value, slider_value
-
-
-# Sync the eye z input and slider
-@app.callback(
-    Output("eye-z-input", "value", allow_duplicate=True),
-    Output("eye-z-slider", "value", allow_duplicate=True),
-    Input("eye-z-input", "value"),
-    Input("eye-z-slider", "value"),
-)
-def sync_eye_z(input_value, slider_value):
-    ctx = callback_context
-    if ctx.triggered:
-        input_id = ctx.triggered[0]["prop_id"].split(".")[0]
-        if input_id == "eye-z-input":
-            return input_value, input_value
-        elif input_id == "eye-z-slider":
-            return slider_value, slider_value
-    return input_value, slider_value
-
-
-# Sync the center x input and slider
-@app.callback(
-    Output("center-x-input", "value", allow_duplicate=True),
-    Output("center-x-slider", "value", allow_duplicate=True),
-    Input("center-x-input", "value"),
-    Input("center-x-slider", "value"),
-)
-def sync_center_x(input_value, slider_value):
-    ctx = callback_context
-    if ctx.triggered:
-        input_id = ctx.triggered[0]["prop_id"].split(".")[0]
-        if input_id == "center-x-input":
-            return input_value, input_value
-        elif input_id == "center-x-slider":
-            return slider_value, slider_value
-    return input_value, slider_value
-
-
-# Sync the center y input and slider
-@app.callback(
-    Output("center-y-input", "value", allow_duplicate=True),
-    Output("center-y-slider", "value", allow_duplicate=True),
-    Input("center-y-input", "value"),
-    Input("center-y-slider", "value"),
-)
-def sync_center_y(input_value, slider_value):
-    ctx = callback_context
-    if ctx.triggered:
-        input_id = ctx.triggered[0]["prop_id"].split(".")[0]
-        if input_id == "center-y-input":
-            return input_value, input_value
-        elif input_id == "center-y-slider":
-            return slider_value, slider_value
-    return input_value, slider_value
-
-
-# Sync the center z input and slider
-@app.callback(
-    Output("center-z-input", "value", allow_duplicate=True),
-    Output("center-z-slider", "value", allow_duplicate=True),
-    Input("center-z-input", "value"),
-    Input("center-z-slider", "value"),
-)
-def sync_center_z(input_value, slider_value):
-    ctx = callback_context
-    if ctx.triggered:
-        input_id = ctx.triggered[0]["prop_id"].split(".")[0]
-        if input_id == "center-z-input":
-            return input_value, input_value
-        elif input_id == "center-z-slider":
-            return slider_value, slider_value
-    return input_value, slider_value
-
-
-# Update sliders and inputs whenever camera is moved by dragging the plot
-@app.callback(
-    [
-        Output("eye-x-input", "value", allow_duplicate=True),
-        Output("eye-x-slider", "value", allow_duplicate=True),
-        Output("eye-y-input", "value", allow_duplicate=True),
-        Output("eye-y-slider", "value", allow_duplicate=True),
-        Output("eye-z-input", "value", allow_duplicate=True),
-        Output("eye-z-slider", "value", allow_duplicate=True),
-        Output("center-x-input", "value", allow_duplicate=True),
-        Output("center-x-slider", "value", allow_duplicate=True),
-        Output("center-y-input", "value", allow_duplicate=True),
-        Output("center-y-slider", "value", allow_duplicate=True),
-        Output("center-z-input", "value", allow_duplicate=True),
-        Output("center-z-slider", "value", allow_duplicate=True),
-    ],
+    Output("cam-output", "children"),
     Input("plot-window", "relayoutData"),
 )
-def update_camera_coordinates(relayout_data):
-    if relayout_data is None or "scene.camera" not in relayout_data:
-        raise PreventUpdate
-
-    camera_data = relayout_data["scene.camera"]
-    eye_x = camera_data["eye"]["x"]
-    eye_y = camera_data["eye"]["y"]
-    eye_z = camera_data["eye"]["z"]
-    center_x = camera_data["center"]["x"]
-    center_y = camera_data["center"]["y"]
-    center_z = camera_data["center"]["z"]
-
-    return (
-        eye_x, eye_x,
-        eye_y, eye_y,
-        eye_z, eye_z,
-        center_x, center_x,
-        center_y, center_y,
-        center_z, center_z,
-    )
+def update_camera_output(relayout_data):
+    return get_cam_data(relayout_data, "main")
 
 
 @app.callback(
@@ -676,7 +341,7 @@ def update_camera_coordinates(relayout_data):
         Input("graph-selector", "value"),
         Input("annotation-x-x", "value"),
         Input("annotation-x-y", "value"),
-        # Input("annotation-x-z", "value"),
+        Input("annotation-x-z", "value"),
         Input("annotation-x-font-size", "value"),
         Input("annotation-x-xanchor", "value"),
         Input("annotation-x-yanchor", "value"),
@@ -685,7 +350,7 @@ def update_camera_coordinates(relayout_data):
         Input("annotation-x-textangle", "value"),
         Input("annotation-y-x", "value"),
         Input("annotation-y-y", "value"),
-        # Input("annotation-y-z", "value"),
+        Input("annotation-y-z", "value"),
         Input("annotation-y-font-size", "value"),
         Input("annotation-y-xanchor", "value"),
         Input("annotation-y-yanchor", "value"),
@@ -694,7 +359,7 @@ def update_camera_coordinates(relayout_data):
         Input("annotation-y-textangle", "value"),
         Input("annotation-z-x", "value"),
         Input("annotation-z-y", "value"),
-        # Input("annotation-z-z", "value"),
+        Input("annotation-z-z", "value"),
         Input("annotation-z-font-size", "value"),
         Input("annotation-z-xanchor", "value"),
         Input("annotation-z-yanchor", "value"),
@@ -707,7 +372,7 @@ def update_annotation_pos(
         graph_selector,
         annotation_x_x,
         annotation_x_y,
-        # annotation_x_z,
+        annotation_x_z,
         annotation_x_font_size,
         annotation_x_xanchor,
         annotation_x_yanchor,
@@ -716,7 +381,7 @@ def update_annotation_pos(
         annotation_x_textangle,
         annotation_y_x,
         annotation_y_y,
-        # annotation_y_z,
+        annotation_y_z,
         annotation_y_font_size,
         annotation_y_xanchor,
         annotation_y_yanchor,
@@ -725,7 +390,7 @@ def update_annotation_pos(
         annotation_y_textangle,
         annotation_z_x,
         annotation_z_y,
-        # annotation_z_z,
+        annotation_z_z,
         annotation_z_font_size,
         annotation_z_xanchor,
         annotation_z_yanchor,
@@ -735,10 +400,9 @@ def update_annotation_pos(
 ):
     annotations = [
         dict(
-            text="X Axis",
             x=annotation_x_x,
             y=annotation_x_y,
-            # z=annotation_x_z,
+            z=annotation_x_z,
             font=dict(size=annotation_x_font_size),
             xshift=annotation_x_xshift,
             yshift=annotation_x_yshift,
@@ -747,10 +411,9 @@ def update_annotation_pos(
             yanchor=annotation_x_yanchor,
         ),
         dict(
-            text="Y Axis",
             x=annotation_y_x,
             y=annotation_y_y,
-            # z=annotation_y_z,
+            z=annotation_y_z,
             font=dict(size=annotation_y_font_size),
             xshift=annotation_y_xshift,
             yshift=annotation_y_yshift,
@@ -759,10 +422,9 @@ def update_annotation_pos(
             yanchor=annotation_y_yanchor,
         ),
         dict(
-            text="Z Axis",
             x=annotation_z_x,
             y=annotation_z_y,
-            # z=annotation_z_z,
+            z=annotation_z_z,
             font=dict(size=annotation_z_font_size),
             xshift=annotation_z_xshift,
             yshift=annotation_z_yshift,
@@ -770,66 +432,18 @@ def update_annotation_pos(
             xanchor=annotation_z_xanchor,
             yanchor=annotation_z_yanchor,
         ),
+        dict(),
+        dict()
     ]
-
-    fig = figs[graph_selector]
-    fig.update_layout(annotations=annotations)
-
-    return fig
-
-
-# Update the plot based on the sliders and input boxes
-@app.callback(
-    Output('plot-window', 'figure', allow_duplicate=True),
-    [
-        Input("graph-selector", "value"),
-        Input('eye-x-input', 'value'),
-        Input('eye-x-slider', 'value'),
-        Input('eye-y-input', 'value'),
-        Input('eye-y-slider', 'value'),
-        Input('eye-z-input', 'value'),
-        Input('eye-z-slider', 'value'),
-        Input('center-x-input', 'value'),
-        Input('center-x-slider', 'value'),
-        Input('center-y-input', 'value'),
-        Input('center-y-slider', 'value'),
-        Input('center-z-input', 'value'),
-        Input('center-z-slider', 'value'),
-    ]
-)
-def update_figure(
-        graph_selector,
-        eye_x_input,
-        eye_x_slider,
-        eye_y_input,
-        eye_y_slider,
-        eye_z_input,
-        eye_z_slider,
-        center_x_input,
-        center_x_slider,
-        center_y_input,
-        center_y_slider,
-        center_z_input,
-        center_z_slider
-):
-    eye_x = eye_x_input if eye_x_input is not None else eye_x_slider
-    eye_y = eye_y_input if eye_y_input is not None else eye_y_slider
-    eye_z = eye_z_input if eye_z_input is not None else eye_z_slider
-    center_x = center_x_input if center_x_input is not None else center_x_slider
-    center_y = center_y_input if center_y_input is not None else center_y_slider
-    center_z = center_z_input if center_z_input is not None else center_z_slider
 
     fig = figs[graph_selector]
     fig.update_layout(
-        autosize=True,
+        scene=dict(annotations=annotations),
+        uirevision=graph_selector,
+        overwrite=False,
 
-        scene=dict(
-            camera=dict(
-                eye=dict(x=eye_x, y=eye_y, z=eye_z),
-                center=dict(x=center_x, y=center_y, z=center_z)
-            )
-        )
     )
+
     return fig
 
 
@@ -838,7 +452,11 @@ def update_figure(
     Input("graph-selector", "value"),
 )
 def select_graph(graph):
-    return figs[graph]
+    fig = figs[graph]
+    fig.update_layout(
+        uirevision=graph,
+    )
+    return fig
 
 
 if __name__ == '__main__':
