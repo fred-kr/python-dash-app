@@ -13,6 +13,7 @@ app = dash.Dash(
     external_stylesheets=external_stylesheets,
     prevent_initial_callbacks="initial_duplicate"
 )
+server = app.server
 
 fig_1 = Plot("25m@10s", "50m@10s", PLOT_TITLES["25m50m@10s"])
 fig_2 = Plot("50m@15s", "25m@15s", PLOT_TITLES["25m50m@15s"])
