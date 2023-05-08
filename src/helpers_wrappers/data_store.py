@@ -1,7 +1,8 @@
 from typing import Dict, List
 
 # Hard coded for now. TODO: Refactor to be dynamic
-FILES = ["../data/25m@10s.txt", "../data/50m@10s.txt", "../data/25m@15s.txt", "../data/50m@15s.txt"]
+FILES = ["..\\data\\25m@10s.txt", "..\\data\\50m@10s.txt", "..\\data\\25m@15s.txt",
+         "..\\data\\50m@15s.txt"]
 
 PLOT_TITLES: Dict[str, str] = {
     "25m50m@10s": "SEE index at 25m and 50m <br> Influence of current and wave (10s wave period)",

@@ -40,7 +40,7 @@ def create_graph(id, figure):
     )
 
 
-def create_tab_content(active_tab, data):
+def create_tab_content(active_tab, data, layout):
     if active_tab and data is not None:
         if active_tab.startswith("tab-graph"):
             graph_id = active_tab.split('-')[-1]
@@ -48,8 +48,7 @@ def create_tab_content(active_tab, data):
                 create_dropdown(f"graph-selector-{graph_id}"),
                 create_graph(f"graph-{graph_id}", data[f"graph-{graph_id}"])
             ])
-        elif active_tab.startswith("tab-side-by-side_2"):
-            layout = active_tab.split('_')[-1]
+        elif active_tab.startswith("tab-side-by-side_2") and layout == "horizontal":
             return dbc.Row([
                 dbc.Col([
                     create_dropdown(f"graph-selector-side-by-side-{layout}-1"),
@@ -60,6 +59,24 @@ def create_tab_content(active_tab, data):
                     create_graph(f"graph-side-by-side-{layout}-2", data["graph-3"])
                 ], width=6),
             ])
+        elif active_tab.startswith("tab-side-by-side_2") and layout == "vertical":
+            return dbc.Row(
+                [
+                    dbc.Col(
+                        [
+                            create_dropdown(
+                                f"graph-selector-side-by-side-{layout}-1"
+                            ),
+                            create_graph("graph-1", data["graph-1"]),
+                            create_dropdown(
+                                f"graph-selector-side-by-side-{layout}-2"
+                            ),
+                            create_graph("graph-3", data["graph-3"]),
+                        ],
+                        width=12,
+                    )
+                ]
+            )
         elif active_tab == "tab-grid_2x2":
             return html.Div([
                 dbc.Row([
@@ -73,3 +90,14 @@ def create_tab_content(active_tab, data):
             ])
 
     return "No tab selected"
+
+
+# html.Label("Select layout for 2 graphs:", className="mt-3"),
+# dcc.RadioItems(
+#     id="layout-radio",
+#     options=[
+#         {"label": "Horizontal", "value": "horizontal"},
+#         {"label": "Vertical", "value": "vertical"},
+#     ],
+#     value="horizontal",
+# ),
