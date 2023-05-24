@@ -1,20 +1,28 @@
-from typing import Dict, List
+import numpy as np
+import pandas as pd
+from .plotly_helpers import make_colorscale_distinct
+from typing import Dict
 
 # Hard coded for now. TODO: Refactor to be dynamic
-FILES = ["..\\data\\25m@10s.txt", "..\\data\\50m@10s.txt", "..\\data\\25m@15s.txt",
-         "..\\data\\50m@15s.txt"]
+FILES = [
+    "../data/25m@10s.txt",
+    "../data/50m@10s.txt",
+    "../data/25m@15s.txt",
+    "../data/50m@15s.txt"
+]
 
 PLOT_TITLES: Dict[str, str] = {
     "25m50m@10s": "SEE index at 25m and 50m <br> Influence of current and wave (10s wave period)",
     "25m50m@15s": "SEE index at 25m and 50m <br> Influence of current and wave (15s wave period)",
     "25m@10s15s": "SEE index at 25m <br> Influence of current and wave (10s and 15s wave period)",
     "50m@10s15s": "SEE index at 50m <br> Influence of current and wave (10s and 15s wave period)",
-    "25m@10s-50m@10s": "Difference between 25m and 50m at 10s wave period",
-    "25m@15s-50m@15s": "Difference between 25m and 50m at 15s wave period",
-    "25m@10s-25m@15s": "Difference between 10s and 15s at 25m",
-    "50m@10s-50m@15s": "Difference between 10s and 15s at 50m",
-    "25m@10s-50m@15s": "Difference between 25m@10s and 50m@15s",
-    "50m@10s-25m@15s": "Difference between 50m@10s and 25m@15s",
+}
+
+DIFF_PLOT_TITLES: Dict[str, str] = {
+    "50m@15s_self": "Reference value (50m@15s)",
+    "50m@15s_vs_25m@10s": "25m@10s vs Reference (50m@15s)",
+    "50m@15s_vs_25m@15s": "25m@15s vs Reference (50m@15s)",
+    "50m@15s_vs_50m@10s": "50m@10s vs Reference (50m@15s)",
 }
 
 AXIS_TITLES = [
@@ -23,90 +31,64 @@ AXIS_TITLES = [
     "SEE index"
 ]
 
-COLOR_SCALES: dict[str, List[str]] = {
-    'RCB_Set3_12': [
-        "#8DD3C7",
-        "#FFFFB3",
-        "#BEBADA",
-        "#FB8072",
-        "#80B1D3",
-        "#FDB462",
-        "#B3DE69",
-        "#FCCDE5",
-        "#D9D9D9",
-        "#BC80BD",
-        "#CCEBC5",
-        "#FFED6F",
-    ],
-    'R_rainbow_10': [
-        "#FF0000",
-        "#FF9900",
-        "#CCFF00",
-        # "#33FF00",
-        "#00FF66",
-        # "#00FFFF",
-        "#0066FF",
-        "#3300FF",
-        "#CC00FF",
-        "#FF0099",
-    ],
-    'D3': [
-        "#1f77b4",
-        "#ff7f0e",
-        "#2ca02c",
-        "#d62728",
-        "#9467bd",
-        "#8c564b",
-        "#e377c2",
-        "#7f7f7f",
-        "#bcbd22",
-        "#17becf",
-    ],
-    'Plotly': [
-        "#636efa",
-        "#EF553B",
-        "#00cc96",
-        "#ab63fa",
-        "#FFA15A",
-        "#19d3f3",
-        "#FF6692",
-        "#B6E880",
-        "#FF97FF",
-        "#FECB52",
-    ],
-    'G10': [
-        "#3366CC",
-        "#DC3912",
-        "#FF9900",
-        "#109618",
-        "#990099",
-        "#3B3EAC",
-        "#0099C6",
-        "#DD4477",
-        "#66AA00",
-        "#B82E2E",
-    ],
-    'Set1': [
-        "#e41a1c",
-        "#377eb8",
-        "#4daf4a",
-        "#984ea3",
-        "#ff7f00",
-        "#ffff33",
-        "#a65628",
-        "#f781bf",
-        "#999999",
-    ],
-    'Light24': ['#FD3216', '#00FE35', '#6A76FC', '#FED4C4', '#FE00CE', '#0DF9FF', '#F6F926',
-                '#FF9616', '#479B55', '#EEA6FB', '#DC587D', '#D626FF', '#6E899C', '#00B5F7',
-                '#B68E00', '#C9FBE5', '#FF0092', '#22FFA7', '#E3EE9E', '#86CE00', '#BC7196',
-                '#7E7DCD', '#FC6955', '#E48F72'],
-    'Vivid': ['rgb(229, 134, 6)', 'rgb(93, 105, 177)', 'rgb(82, 188, 163)', 'rgb(153, 201, 69)',
-              'rgb(204, 97, 176)', 'rgb(36, 121, 108)', 'rgb(218, 165, 27)', 'rgb(47, 138, 196)',
-              'rgb(118, 78, 159)', 'rgb(237, 100, 90)', 'rgb(165, 170, 153)'],
-    'Pastel': ['rgb(102, 197, 204)', 'rgb(246, 207, 113)', 'rgb(248, 156, 116)',
-               'rgb(220, 176, 242)', 'rgb(135, 197, 95)', 'rgb(158, 185, 243)',
-               'rgb(254, 136, 177)', 'rgb(201, 219, 116)', 'rgb(139, 224, 164)',
-               'rgb(180, 151, 231)', 'rgb(179, 179, 179)']
+X = np.linspace(0, 10, 21)
+Y = np.linspace(0, 1.5, 16)
+Z_VALUES = [
+    pd.read_table(FILES[0], header=None).to_numpy(),  # 25m@10s
+    pd.read_table(FILES[1], header=None).to_numpy(),  # 50m@10s
+    pd.read_table(FILES[2], header=None).to_numpy(),  # 25m@15s
+    pd.read_table(FILES[3], header=None).to_numpy(),   # 50m@15s
+]
 
+Z_DIFFS = [
+    (Z_VALUES[3]/np.max(Z_VALUES[3])) * 100,
+    (Z_VALUES[0]/np.max(Z_VALUES[3])) * 100,
+    (Z_VALUES[2]/np.max(Z_VALUES[3])) * 100,
+    (Z_VALUES[1]/np.max(Z_VALUES[3])) * 100,
+]
+
+N_COLORS = {
+    "25m@10s": int(np.ceil(np.max(Z_VALUES[0])) // 2),
+    "50m@10s": int(np.ceil(np.max(Z_VALUES[1])) // 2),
+    "25m@15s": int(np.ceil(np.max(Z_VALUES[2])) // 2),
+    "50m@15s": int(np.ceil(np.max(Z_VALUES[3])) // 2),
 }
+
+SURFACE_COLORS = {
+    "25m@10s": make_colorscale_distinct(N_COLORS["25m@10s"]),
+    "50m@10s": make_colorscale_distinct(N_COLORS["50m@10s"]),
+    "25m@15s": make_colorscale_distinct(N_COLORS["25m@15s"]),
+    "50m@15s": make_colorscale_distinct(N_COLORS["50m@15s"]),
+}
+
+SURFACES = {
+    "25m@10s": {"x": X, "y": Y, "z": Z_VALUES[0]},
+    "50m@10s": {"x": X, "y": Y, "z": Z_VALUES[1]},
+    "25m@15s": {"x": X, "y": Y, "z": Z_VALUES[2]},
+    "50m@15s": {"x": X, "y": Y, "z": Z_VALUES[3]},
+}
+
+DIFF_SURFACES = {
+    "50m@15s_self": {"x": X, "y": Y, "z": Z_DIFFS[0]},
+    "50m@15s_vs_25m@10s": {"x": X, "y": Y, "z": Z_DIFFS[1]},
+    "50m@15s_vs_25m@15s": {"x": X, "y": Y, "z": Z_DIFFS[2]},
+    "50m@15s_vs_50m@10s": {"x": X, "y": Y, "z": Z_DIFFS[3]},
+}
+
+
+def merge_properties():
+    # sourcery skip: dict-comprehension, inline-immediately-returned-variable
+    """
+    Merge all properties into a single dictionary
+    """
+    properties = {}
+    for key, value in SURFACES.items():
+        properties[key] = {
+            "surface": value,
+            "colorscale": SURFACE_COLORS[key],
+            "n_colors": N_COLORS[key],
+        }
+    return properties
+
+
+SURFACE_PROPERTIES = merge_properties()

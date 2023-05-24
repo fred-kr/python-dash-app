@@ -7,7 +7,3 @@
 /dataSources/
 /dataSources.local.xml
 
-plot_data/*
-old/
-temp.py
-old_app.py

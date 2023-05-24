@@ -332,3 +332,9 @@ old/
 .idea/codeStyles/
 .idea/inspectionProfiles/
 ruff.toml
+
+data/
+plot_data/
+old/
+temp.py
+old_app.py
